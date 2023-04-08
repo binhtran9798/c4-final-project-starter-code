@@ -1,8 +1,9 @@
 import { TodosAccess } from '../dataLayer/todosAcess'
 import { AttachmentUtils } from '../helpers/attachmentUtils';
 import { TodoItem } from '../models/TodoItem'
+import { TodoUpdate } from '../models/TodoUpdate';
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
-// import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 import { createLogger } from '../utils/logger'
 import * as uuid from 'uuid'
 // import * as createError from 'http-errors'
@@ -39,3 +40,31 @@ export async function createTodo(
 
     return await todosAccess.createTodoItem(newItem);
 };
+
+// Write update todo function
+export async function updateTodo(
+    todoId: string,
+    todoUpdate: UpdateTodoRequest,
+    userId: string
+): Promise<TodoUpdate> {
+    logger.info('Update todo function called');
+    return todosAccess.updateTodoItem(todoId, userId, todoUpdate);
+}
+
+// Write delete todo function
+export async function deleteTodo(
+    todoId: string,
+    userId: string
+): Promise<string> {
+    logger.info('Delete todo function called');
+    return todosAccess.deleteTodoItem(todoId, userId);
+}
+
+// Write create attachment function
+export async function createAttachmentPresignedUrl(
+    todoId: string,
+    userId: string
+): Promise<string> {
+    logger.info('Create attachment function called by user', userId, todoId);
+    return attachmentUtils.getUploadUrl(todoId)
+}
